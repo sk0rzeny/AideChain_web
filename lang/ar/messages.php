@@ -318,5 +318,6 @@ return [
     'field_agent_interface'      => 'واجهة العامل الميداني',
     'field_agent_sub'            => 'سجّل المستفيدين ووزّع المساعدات.',
     'attached_ong'               => 'المنظمة المنتسب إليها',
+    'auto_duplicate_check'       => 'فحص تلقائي للتكرار',
     'select_active_project'      => 'اختر من المشاريع النشطة',
 ];

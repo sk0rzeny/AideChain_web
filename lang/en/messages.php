@@ -318,5 +318,6 @@ return [
     'field_agent_interface'      => 'Field agent interface',
     'field_agent_sub'            => 'Register beneficiaries and distribute aid.',
     'attached_ong'               => 'Attached NGO',
+    'auto_duplicate_check'       => 'Automatic duplicate check',
     'select_active_project'      => 'Select from active projects',
 ];

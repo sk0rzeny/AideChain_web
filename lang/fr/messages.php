@@ -318,5 +318,6 @@ return [
     'field_agent_interface'      => 'Interface agent terrain',
     'field_agent_sub'            => 'Enregistrez des bénéficiaires et distribuez des aides.',
     'attached_ong'               => 'ONG rattachée',
+    'auto_duplicate_check'       => 'Vérification automatique des doublons',
     'select_active_project'      => 'Sélectionner parmi les projets actifs',
 ];

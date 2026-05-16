@@ -351,7 +351,7 @@
             display: flex; align-items: center; gap: 22px;
         }
         .mphoto {
-            width: 72px; height: 72px; border-radius: 50%;
+            width: 200px; height: 200px; border-radius: 50%;
             object-fit: cover; flex-shrink: 0;
         }
         .mfall {
@@ -363,15 +363,15 @@
         .mbadge {
             display: inline-flex;
             background: var(--blue); color: #fff;
-            font-size: 10px; font-weight: 700;
+            font-size: 12px; font-weight: 700;
             letter-spacing: 2px; text-transform: uppercase;
             padding: 3px 10px; border-radius: 100px; margin-bottom: 5px;
         }
-        .mname { font-size: 17px; font-weight: 800; margin-bottom: 2px; }
-        .mtitle { font-size: 12px; color: var(--gray); margin-bottom: 10px; }
+        .mname { font-size: 30px; font-weight: 800; margin-bottom: 2px; }
+        .mtitle { font-size: 18px; color: var(--gray); margin-bottom: 10px; }
         .mlinks { display: flex; gap: 14px; }
         .mlink {
-            font-size: 12px; font-weight: 600; color: var(--blue);
+            font-size: 15px; font-weight: 600; color: var(--blue);
             transition: opacity .15s;
         }
         .mlink:hover { opacity: .7; }
@@ -658,7 +658,7 @@
             </div>
             <div class="team-grid">
                 <div class="tcard" data-aos style="transition-delay:.08s">
-                    <img src="/images/team/hamit.jpg" alt="Hamit Ali Mahamat" class="tphoto"
+                    <img src="{{ asset('images/team/hamit.jpg') }}" alt="Hamit Ali Mahamat" class="tphoto"
                         onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
                     <div class="tfall" aria-hidden="true">HA</div>
                     <div class="tinfo">
@@ -671,7 +671,7 @@
                     </div>
                 </div>
                 <div class="tcard" data-aos style="transition-delay:.16s">
-                    <img src="/images/team/ngong.jpg" alt="Ngong-né Tchoubou" class="tphoto"
+                    <img src="{{ asset('images/team/ngong.jpg') }}" alt="Ngong-né Tchoubou" class="tphoto"
                         onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
                     <div class="tfall" aria-hidden="true">NT</div>
                     <div class="tinfo">
@@ -683,7 +683,7 @@
                     </div>
                 </div>
                 <div class="tcard" data-aos style="transition-delay:.24s">
-                    <img src="/images/team/idriss.jpg" alt="Mahamat Idriss Mahamat" class="tphoto"
+                    <img src="{{ asset('images/team/idriss.jpg') }}" alt="Mahamat Idriss Mahamat" class="tphoto"
                         onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
                     <div class="tfall" aria-hidden="true">MI</div>
                     <div class="tinfo">
@@ -695,7 +695,7 @@
                     </div>
                 </div>
                 <div class="tcard" data-aos style="transition-delay:.32s">
-                    <img src="/images/team/ludovic.jpg" alt="Ludovic Mateyan Nelson" class="tphoto"
+                    <img src="{{ asset('images/team/ludovic.jpg') }}" alt="Ludovic Mateyan Nelson" class="tphoto"
                         onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
                     <div class="tfall" aria-hidden="true">LM</div>
                     <div class="tinfo">
@@ -705,7 +705,7 @@
                 </div>
             </div>
             <div class="mentor" data-aos>
-                <img src="/images/team/skorzeny.jpg" alt="Kemleyogoto Skorzeny" class="mphoto"
+                <img src="{{ asset('images/team/skorzeny.jpg') }}" alt="Kemleyogoto Skorzeny" class="mphoto"
                     onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
                 <div class="mfall" aria-hidden="true">KS</div>
                 <div>
