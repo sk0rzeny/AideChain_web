@@ -3,11 +3,11 @@
     {{-- Header --}}
     <div class="flex items-center justify-between">
         <div>
-            <flux:heading size="xl">Tableau de coordination</flux:heading>
-            <flux:text class="mt-1">Couverture humanitaire AideChain — toutes organisations confondues.</flux:text>
+            <flux:heading size="xl">{{ __('messages.coord_dashboard_title') }}</flux:heading>
+            <flux:text class="mt-1">{{ __('messages.coord_sub') }}</flux:text>
         </div>
         <flux:button :href="route('dashboard')" wire:navigate variant="ghost" size="sm">
-            ← Tableau de bord
+            {{ __('messages.back_to_dashboard') }}
         </flux:button>
     </div>
 
@@ -15,15 +15,15 @@
     <div class="grid grid-cols-4 gap-4">
         <div class="rounded-xl border border-blue-200 bg-blue-50 p-5 dark:border-blue-700 dark:bg-blue-900/20">
             <p class="text-3xl font-bold text-blue-800 dark:text-blue-100">{{ $kpis['totalBeneficiaires'] }}</p>
-            <p class="mt-1 text-sm text-blue-600 dark:text-blue-400">Bénéficiaires enregistrés</p>
+            <p class="mt-1 text-sm text-blue-600 dark:text-blue-400">{{ __('messages.beneficiaries_registered') }}</p>
         </div>
         <div class="rounded-xl border border-green-200 bg-green-50 p-5 dark:border-green-700 dark:bg-green-900/20">
             <p class="text-3xl font-bold text-green-800 dark:text-green-100">{{ $kpis['aidesActives'] }}</p>
-            <p class="mt-1 text-sm text-green-600 dark:text-green-400">Aides actives en cours</p>
+            <p class="mt-1 text-sm text-green-600 dark:text-green-400">{{ __('messages.active_aids') }}</p>
         </div>
         <div class="rounded-xl border border-purple-200 bg-purple-50 p-5 dark:border-purple-700 dark:bg-purple-900/20">
             <p class="text-3xl font-bold text-purple-800 dark:text-purple-100">{{ $kpis['ongsActives'] }}</p>
-            <p class="mt-1 text-sm text-purple-600 dark:text-purple-400">ONGs actives</p>
+            <p class="mt-1 text-sm text-purple-600 dark:text-purple-400">{{ __('messages.active_ongs') }}</p>
         </div>
         <div class="rounded-xl border p-5
             @if($kpis['tauxCouverture'] >= 70) border-green-200 bg-green-50 dark:border-green-700 dark:bg-green-900/20
@@ -39,14 +39,14 @@
                 @if($kpis['tauxCouverture'] >= 70) text-green-600 dark:text-green-400
                 @elseif($kpis['tauxCouverture'] > 0) text-yellow-600 dark:text-yellow-400
                 @else text-red-600 dark:text-red-400 @endif">
-                Taux de couverture global
+                {{ __('messages.global_coverage_rate') }}
             </p>
             @if($kpis['totalBeneficiaires'] > 0)
                 <p class="mt-0.5 text-xs
                     @if($kpis['tauxCouverture'] >= 70) text-green-500 dark:text-green-500
                     @elseif($kpis['tauxCouverture'] > 0) text-yellow-500 dark:text-yellow-500
                     @else text-red-500 dark:text-red-500 @endif">
-                    {{ $kpis['beneficiairesCouverts'] }} / {{ $kpis['totalBeneficiaires'] }} bénéficiaires
+                    {{ $kpis['beneficiairesCouverts'] }} / {{ $kpis['totalBeneficiaires'] }} {{ __('messages.beneficiary') }}
                 </p>
             @endif
         </div>
@@ -55,23 +55,23 @@
     {{-- Couverture par ONG --}}
     <div class="rounded-xl border border-zinc-200 dark:border-zinc-700">
         <div class="border-b border-zinc-200 px-5 py-4 dark:border-zinc-700">
-            <flux:heading size="lg">Couverture par organisation</flux:heading>
+            <flux:heading size="lg">{{ __('messages.coverage_by_org') }}</flux:heading>
         </div>
 
         @if($couvByOng->isEmpty())
             <div class="p-8 text-center text-sm text-zinc-400">
-                Aucune ONG active dans le système.
+                {{ __('messages.no_active_ong') }}
             </div>
         @else
             <table class="w-full text-sm">
                 <thead class="bg-zinc-50 dark:bg-zinc-800">
                     <tr>
-                        <th class="px-5 py-3 text-left font-medium text-zinc-500">Organisation</th>
-                        <th class="px-5 py-3 text-right font-medium text-zinc-500">Bénéficiaires</th>
-                        <th class="px-5 py-3 text-right font-medium text-zinc-500">Couverts</th>
-                        <th class="px-5 py-3 text-right font-medium text-zinc-500">Non couverts</th>
-                        <th class="px-5 py-3 text-center font-medium text-zinc-500">Taux</th>
-                        <th class="px-5 py-3 text-center font-medium text-zinc-500">Statut</th>
+                        <th class="px-5 py-3 text-left font-medium text-zinc-500">{{ __('messages.organization') }}</th>
+                        <th class="px-5 py-3 text-right font-medium text-zinc-500">{{ __('messages.beneficiary') }}</th>
+                        <th class="px-5 py-3 text-right font-medium text-zinc-500">{{ __('messages.covered') }}</th>
+                        <th class="px-5 py-3 text-right font-medium text-zinc-500">{{ __('messages.not_covered_col') }}</th>
+                        <th class="px-5 py-3 text-center font-medium text-zinc-500">{{ __('messages.rate') }}</th>
+                        <th class="px-5 py-3 text-center font-medium text-zinc-500">{{ __('messages.status') }}</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-zinc-100 dark:divide-zinc-800">
@@ -104,13 +104,13 @@
                             </td>
                             <td class="px-5 py-3 text-center text-xs">
                                 @if($row['statut'] === 'bon')
-                                    <span class="text-green-600 dark:text-green-400">● Couvert</span>
+                                    <span class="text-green-600 dark:text-green-400">● {{ __('messages.covered_status') }}</span>
                                 @elseif($row['statut'] === 'partiel')
-                                    <span class="text-yellow-600 dark:text-yellow-400">● Partiel</span>
+                                    <span class="text-yellow-600 dark:text-yellow-400">● {{ __('messages.partial_status') }}</span>
                                 @elseif($row['statut'] === 'nul')
-                                    <span class="font-semibold text-red-600 dark:text-red-400">● Non couvert</span>
+                                    <span class="font-semibold text-red-600 dark:text-red-400">● {{ __('messages.not_covered_status') }}</span>
                                 @else
-                                    <span class="text-zinc-400">● Vide</span>
+                                    <span class="text-zinc-400">● {{ __('messages.empty_status') }}</span>
                                 @endif
                             </td>
                         </tr>
@@ -123,7 +123,7 @@
     {{-- Bénéficiaires sans aide active --}}
     <div class="rounded-xl border border-zinc-200 dark:border-zinc-700">
         <div class="flex items-center justify-between border-b border-zinc-200 px-5 py-4 dark:border-zinc-700">
-            <flux:heading size="lg">Bénéficiaires sans aide active</flux:heading>
+            <flux:heading size="lg">{{ __('messages.beneficiaries_without_aid') }}</flux:heading>
             @if($nonCouverts->isNotEmpty())
                 <span class="rounded-full bg-red-100 px-2.5 py-0.5 text-xs font-medium text-red-700 dark:bg-red-900/40 dark:text-red-300">
                     {{ $nonCouverts->count() }}{{ $nonCouverts->count() >= 20 ? '+' : '' }}
@@ -135,20 +135,20 @@
             <div class="flex items-center gap-3 p-6">
                 <span class="text-xl text-green-500">✓</span>
                 <p class="text-sm font-medium text-green-700 dark:text-green-400">
-                    Tous les bénéficiaires enregistrés ont une aide active en cours.
+                    {{ __('messages.all_covered_text') }}
                 </p>
             </div>
         @else
             <table class="w-full text-sm">
                 <thead class="bg-zinc-50 dark:bg-zinc-800">
                     <tr>
-                        <th class="px-5 py-3 text-left font-medium text-zinc-500">Bénéficiaire</th>
-                        <th class="px-5 py-3 text-left font-medium text-zinc-500">Catégorie</th>
+                        <th class="px-5 py-3 text-left font-medium text-zinc-500">{{ __('messages.beneficiary') }}</th>
+                        <th class="px-5 py-3 text-left font-medium text-zinc-500">{{ __('messages.category') }}</th>
                         @if($isAdmin)
-                            <th class="px-5 py-3 text-left font-medium text-zinc-500">ONG</th>
+                            <th class="px-5 py-3 text-left font-medium text-zinc-500">{{ __('messages.ong') }}</th>
                         @endif
                         @if(!$isAdmin)
-                            <th class="px-5 py-3 text-left font-medium text-zinc-500">Action</th>
+                            <th class="px-5 py-3 text-left font-medium text-zinc-500">{{ __('messages.action') }}</th>
                         @endif
                     </tr>
                 </thead>
@@ -171,7 +171,7 @@
                                         wire:navigate
                                         class="text-xs font-medium text-blue-600 hover:underline dark:text-blue-400"
                                     >
-                                        Distribuer une aide →
+                                        {{ __('messages.distribute_aid_arrow') }}
                                     </a>
                                 </td>
                             @endif

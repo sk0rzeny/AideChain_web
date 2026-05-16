@@ -130,24 +130,24 @@ new class extends Component {
     {
         if ($this->setupComplete) {
             return [
-                'title' => __('Two-factor authentication enabled'),
-                'description' => __('Two-factor authentication is now enabled. Scan the QR code or enter the setup key in your authenticator app.'),
-                'buttonText' => __('Close'),
+                'title' => __('messages.two_factor_enabled'),
+                'description' => __('messages.two_factor_enabled_text'),
+                'buttonText' => __('messages.close'),
             ];
         }
 
         if ($this->showVerificationStep) {
             return [
-                'title' => __('Verify authentication code'),
-                'description' => __('Enter the 6-digit code from your authenticator app.'),
-                'buttonText' => __('Continue'),
+                'title' => __('messages.verify_auth_code'),
+                'description' => __('messages.auth_code_hint'),
+                'buttonText' => __('messages.continue'),
             ];
         }
 
         return [
-            'title' => __('Enable two-factor authentication'),
-            'description' => __('To finish enabling two-factor authentication, scan the QR code or enter the setup key in your authenticator app.'),
-            'buttonText' => __('Continue'),
+            'title' => __('messages.enable_two_factor'),
+            'description' => __('messages.enable_2fa_scan'),
+            'buttonText' => __('messages.continue'),
         ];
     }
 }; ?>
@@ -206,7 +206,7 @@ new class extends Component {
                             class="flex-1"
                             wire:click="resetVerification"
                         >
-                            {{ __('Back') }}
+                            {{ __('messages.back') }}
                         </flux:button>
 
                         <flux:button
@@ -215,7 +215,7 @@ new class extends Component {
                             wire:click="confirmTwoFactor"
                             x-bind:disabled="$wire.code.length < 6"
                         >
-                            {{ __('Confirm') }}
+                            {{ __('messages.confirm') }}
                         </flux:button>
                     </div>
                 </div>
@@ -258,7 +258,7 @@ new class extends Component {
                     <div class="relative flex items-center justify-center w-full">
                         <div class="absolute inset-0 w-full h-px top-1/2 bg-stone-200 dark:bg-stone-600"></div>
                         <span class="relative px-2 text-sm bg-white dark:bg-stone-800 text-stone-600 dark:text-stone-400">
-                            {{ __('or, enter the code manually') }}
+                            {{ __('messages.enter_manually') }}
                         </span>
                     </div>
 

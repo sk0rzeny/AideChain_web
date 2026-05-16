@@ -4,25 +4,25 @@
     <div class="grid grid-cols-3 gap-4">
         <div class="rounded-xl border border-yellow-200 bg-yellow-50 p-4 dark:border-yellow-800 dark:bg-yellow-900/20">
             <p class="text-3xl font-bold text-yellow-700 dark:text-yellow-300">{{ $countPending }}</p>
-            <p class="mt-1 text-sm font-medium text-yellow-600 dark:text-yellow-400">En attente</p>
+            <p class="mt-1 text-sm font-medium text-yellow-600 dark:text-yellow-400">{{ __('messages.pending') }}</p>
         </div>
         <div class="rounded-xl border border-green-200 bg-green-50 p-4 dark:border-green-800 dark:bg-green-900/20">
             <p class="text-3xl font-bold text-green-700 dark:text-green-300">{{ $countActive }}</p>
-            <p class="mt-1 text-sm font-medium text-green-600 dark:text-green-400">Validées</p>
+            <p class="mt-1 text-sm font-medium text-green-600 dark:text-green-400">{{ __('messages.validated') }}</p>
         </div>
         <div class="rounded-xl border border-red-200 bg-red-50 p-4 dark:border-red-800 dark:bg-red-900/20">
             <p class="text-3xl font-bold text-red-700 dark:text-red-300">{{ $countRejected }}</p>
-            <p class="mt-1 text-sm font-medium text-red-600 dark:text-red-400">Rejetées</p>
+            <p class="mt-1 text-sm font-medium text-red-600 dark:text-red-400">{{ __('messages.rejected_status') }}</p>
         </div>
     </div>
 
     {{-- Filtres --}}
     <div class="flex gap-2">
         @foreach([
-            'all'      => 'Toutes (' . $countTotal . ')',
-            'pending'  => 'En attente (' . $countPending . ')',
-            'active'   => 'Validées (' . $countActive . ')',
-            'rejected' => 'Rejetées (' . $countRejected . ')',
+            'all'      => __('messages.all_label') . ' (' . $countTotal . ')',
+            'pending'  => __('messages.pending') . ' (' . $countPending . ')',
+            'active'   => __('messages.validated') . ' (' . $countActive . ')',
+            'rejected' => __('messages.rejected_status') . ' (' . $countRejected . ')',
         ] as $valeur => $label)
             <button
                 wire:click="$set('filtre', '{{ $valeur }}')"
@@ -39,25 +39,24 @@
     {{-- Tableau --}}
     @if($ongs->isEmpty())
         <div class="rounded-xl border border-zinc-200 p-10 text-center dark:border-zinc-700">
-            <p class="text-zinc-500">Aucune ONG dans cette catégorie.</p>
+            <p class="text-zinc-500">{{ __('messages.no_ong_in_category') }}</p>
         </div>
     @else
         <div class="overflow-hidden rounded-xl border border-zinc-200 dark:border-zinc-700">
             <table class="w-full text-sm">
                 <thead class="bg-zinc-50 dark:bg-zinc-800">
                     <tr>
-                        <th class="px-4 py-3 text-left font-medium text-zinc-500">Organisation</th>
-                        <th class="px-4 py-3 text-left font-medium text-zinc-500">Représentant</th>
-                        <th class="px-4 py-3 text-left font-medium text-zinc-500">Documents</th>
-                        <th class="px-4 py-3 text-left font-medium text-zinc-500">Statut</th>
-                        <th class="px-4 py-3 text-left font-medium text-zinc-500">Actions</th>
+                        <th class="px-4 py-3 text-left font-medium text-zinc-500">{{ __('messages.organization') }}</th>
+                        <th class="px-4 py-3 text-left font-medium text-zinc-500">{{ __('messages.representative') }}</th>
+                        <th class="px-4 py-3 text-left font-medium text-zinc-500">{{ __('messages.documents') }}</th>
+                        <th class="px-4 py-3 text-left font-medium text-zinc-500">{{ __('messages.status') }}</th>
+                        <th class="px-4 py-3 text-left font-medium text-zinc-500">{{ __('messages.actions') }}</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-zinc-100 dark:divide-zinc-800">
                     @foreach($ongs as $ong)
                         <tr class="bg-white hover:bg-zinc-50 dark:bg-zinc-900 dark:hover:bg-zinc-800/50">
 
-                            {{-- Organisation --}}
                             <td class="px-4 py-4">
                                 <p class="font-semibold text-zinc-800 dark:text-zinc-200">{{ $ong->nom }}</p>
                                 <p class="text-xs text-zinc-400">{{ $ong->email }}</p>
@@ -66,7 +65,6 @@
                                 @endif
                             </td>
 
-                            {{-- Représentant --}}
                             <td class="px-4 py-4">
                                 @if($ong->representant)
                                     <p class="font-medium text-zinc-700 dark:text-zinc-300">{{ $ong->representant->name }}</p>
@@ -76,10 +74,9 @@
                                 @endif
                             </td>
 
-                            {{-- Documents --}}
                             <td class="px-4 py-4">
                                 @if($ong->documents->isEmpty())
-                                    <span class="text-zinc-400">Aucun</span>
+                                    <span class="text-zinc-400">{{ __('messages.none_doc') }}</span>
                                 @else
                                     <div class="flex flex-col gap-1">
                                         @foreach($ong->documents as $doc)
@@ -96,58 +93,56 @@
                                 @endif
                             </td>
 
-                            {{-- Statut --}}
                             <td class="px-4 py-4">
                                 @if($ong->statut === 'pending')
                                     <span class="rounded-full bg-yellow-100 px-2.5 py-1 text-xs font-medium text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-300">
-                                        En attente
+                                        {{ __('messages.pending') }}
                                     </span>
                                 @elseif($ong->statut === 'active')
                                     <span class="rounded-full bg-green-100 px-2.5 py-1 text-xs font-medium text-green-700 dark:bg-green-900/30 dark:text-green-300">
-                                        Validée
+                                        {{ __('messages.validated') }}
                                     </span>
                                 @elseif($ong->statut === 'rejected')
                                     <span class="rounded-full bg-red-100 px-2.5 py-1 text-xs font-medium text-red-700 dark:bg-red-900/30 dark:text-red-300">
-                                        Rejetée
+                                        {{ __('messages.rejected_status') }}
                                     </span>
                                 @endif
                                 <p class="mt-1 text-xs text-zinc-400">{{ $ong->created_at->format('d/m/Y') }}</p>
                             </td>
 
-                            {{-- Actions --}}
                             <td class="px-4 py-4">
                                 @if($ong->statut === 'pending')
                                     <div class="flex items-center gap-2">
                                         <button
                                             wire:click="valider({{ $ong->id }})"
-                                            wire:confirm="Valider l'ONG « {{ $ong->nom }} » ?"
+                                            wire:confirm="{{ __('messages.validate') }} « {{ $ong->nom }} » ?"
                                             class="rounded-lg bg-green-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-green-700"
                                         >
-                                            Valider
+                                            {{ __('messages.validate') }}
                                         </button>
                                         <button
                                             wire:click="rejeter({{ $ong->id }})"
-                                            wire:confirm="Rejeter l'ONG « {{ $ong->nom }} » ? Le représentant pourra re-soumettre."
+                                            wire:confirm="{{ __('messages.reject_btn') }} « {{ $ong->nom }} » ?"
                                             class="rounded-lg bg-red-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-red-700"
                                         >
-                                            Rejeter
+                                            {{ __('messages.reject_btn') }}
                                         </button>
                                     </div>
                                 @elseif($ong->statut === 'active')
                                     <button
                                         wire:click="rejeter({{ $ong->id }})"
-                                        wire:confirm="Suspendre l'ONG « {{ $ong->nom }} » ?"
+                                        wire:confirm="{{ __('messages.suspend_btn') }} « {{ $ong->nom }} » ?"
                                         class="rounded-lg border border-red-300 px-3 py-1.5 text-xs font-medium text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20"
                                     >
-                                        Suspendre
+                                        {{ __('messages.suspend_btn') }}
                                     </button>
                                 @elseif($ong->statut === 'rejected')
                                     <button
                                         wire:click="valider({{ $ong->id }})"
-                                        wire:confirm="Réactiver l'ONG « {{ $ong->nom }} » ?"
+                                        wire:confirm="{{ __('messages.reactivate') }} « {{ $ong->nom }} » ?"
                                         class="rounded-lg border border-green-300 px-3 py-1.5 text-xs font-medium text-green-600 hover:bg-green-50 dark:hover:bg-green-900/20"
                                     >
-                                        Réactiver
+                                        {{ __('messages.reactivate') }}
                                     </button>
                                 @endif
                             </td>

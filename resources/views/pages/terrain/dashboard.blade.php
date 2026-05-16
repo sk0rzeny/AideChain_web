@@ -1,10 +1,10 @@
-<x-layouts::app :title="__('Interface terrain')">
+<x-layouts::app :title="__('messages.field_interface')">
     <div class="flex h-full w-full flex-1 flex-col gap-6 p-6">
 
         <div class="flex items-center justify-between">
             <div>
-                <flux:heading size="xl">Interface agent terrain</flux:heading>
-                <flux:text class="mt-1">Enregistrez des bénéficiaires et distribuez des aides.</flux:text>
+                <flux:heading size="xl">{{ __('messages.field_agent_interface') }}</flux:heading>
+                <flux:text class="mt-1">{{ __('messages.field_agent_sub') }}</flux:text>
             </div>
         </div>
 
@@ -14,7 +14,7 @@
                 <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-2 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
             </div>
             <div>
-                <p class="text-xs font-medium uppercase tracking-wide text-zinc-400">ONG rattachée</p>
+                <p class="text-xs font-medium uppercase tracking-wide text-zinc-400">{{ __('messages.attached_ong') }}</p>
                 <p class="font-semibold text-zinc-800 dark:text-zinc-100">{{ $ong->nom }}</p>
             </div>
         </div>
@@ -30,8 +30,8 @@
                     <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"/></svg>
                 </div>
                 <div>
-                    <p class="font-semibold text-zinc-800 dark:text-zinc-100">Enregistrer un bénéficiaire</p>
-                    <p class="mt-0.5 text-sm text-zinc-500">Vérification doublon automatique</p>
+                    <p class="font-semibold text-zinc-800 dark:text-zinc-100">{{ __('messages.register_beneficiary_title') }}</p>
+                    <p class="mt-0.5 text-sm text-zinc-500">{{ __('messages.auto_duplicate_check') }}</p>
                 </div>
             </a>
 
@@ -44,8 +44,8 @@
                     <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                 </div>
                 <div>
-                    <p class="font-semibold text-zinc-800 dark:text-zinc-100">Distribuer une aide</p>
-                    <p class="mt-0.5 text-sm text-zinc-500">Sélectionner parmi les projets actifs</p>
+                    <p class="font-semibold text-zinc-800 dark:text-zinc-100">{{ __('messages.distribute_aid_btn') }}</p>
+                    <p class="mt-0.5 text-sm text-zinc-500">{{ __('messages.select_active_project') }}</p>
                 </div>
             </a>
         </div>
@@ -54,37 +54,37 @@
         <div class="grid grid-cols-3 gap-4">
             <div class="rounded-xl border border-zinc-200 bg-white p-5 dark:border-zinc-700 dark:bg-zinc-900">
                 <p class="text-3xl font-bold text-zinc-800 dark:text-zinc-100">{{ $nbBeneficiaires }}</p>
-                <p class="mt-1 text-sm text-zinc-500">Bénéficiaires enregistrés</p>
+                <p class="mt-1 text-sm text-zinc-500">{{ __('messages.beneficiaries_registered') }}</p>
             </div>
             <div class="rounded-xl border border-zinc-200 bg-white p-5 dark:border-zinc-700 dark:bg-zinc-900">
                 <p class="text-3xl font-bold text-zinc-800 dark:text-zinc-100">{{ $nbDistributions }}</p>
-                <p class="mt-1 text-sm text-zinc-500">Aides distribuées</p>
+                <p class="mt-1 text-sm text-zinc-500">{{ __('messages.aids_distributed') }}</p>
             </div>
             <div class="rounded-xl border border-zinc-200 bg-white p-5 dark:border-zinc-700 dark:bg-zinc-900">
                 <p class="text-3xl font-bold text-zinc-800 dark:text-zinc-100">{{ $nbProjets }}</p>
-                <p class="mt-1 text-sm text-zinc-500">Projets actifs</p>
+                <p class="mt-1 text-sm text-zinc-500">{{ __('messages.active_projects') }}</p>
             </div>
         </div>
 
         {{-- Dernières distributions --}}
         <div class="rounded-xl border border-zinc-200 dark:border-zinc-700">
             <div class="border-b border-zinc-200 px-5 py-4 dark:border-zinc-700">
-                <flux:heading size="lg">Dernières distributions</flux:heading>
+                <flux:heading size="lg">{{ __('messages.recent_distributions') }}</flux:heading>
             </div>
 
             @if($aidesRecentes->isEmpty())
                 <div class="p-8 text-center text-sm text-zinc-400">
-                    Aucune aide distribuée pour l'instant.
+                    {{ __('messages.no_aids_yet') }}
                 </div>
             @else
                 <table class="w-full text-sm">
                     <thead class="bg-zinc-50 dark:bg-zinc-800">
                         <tr>
-                            <th class="px-5 py-3 text-left font-medium text-zinc-500">Bénéficiaire</th>
-                            <th class="px-5 py-3 text-left font-medium text-zinc-500">Projet</th>
-                            <th class="px-5 py-3 text-left font-medium text-zinc-500">Type d'aide</th>
-                            <th class="px-5 py-3 text-left font-medium text-zinc-500">Date</th>
-                            <th class="px-5 py-3 text-left font-medium text-zinc-500">Expire le</th>
+                            <th class="px-5 py-3 text-left font-medium text-zinc-500">{{ __('messages.beneficiary') }}</th>
+                            <th class="px-5 py-3 text-left font-medium text-zinc-500">{{ __('messages.project') }}</th>
+                            <th class="px-5 py-3 text-left font-medium text-zinc-500">{{ __('messages.aid_type') }}</th>
+                            <th class="px-5 py-3 text-left font-medium text-zinc-500">{{ __('messages.date_col') }}</th>
+                            <th class="px-5 py-3 text-left font-medium text-zinc-500">{{ __('messages.expires_on') }}</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-zinc-100 dark:divide-zinc-800">
@@ -98,7 +98,7 @@
                                 <td class="px-5 py-3 text-zinc-400">{{ $aide->date_distribution->format('d/m/Y') }}</td>
                                 <td class="px-5 py-3">
                                     @if($aide->date_expiration->isPast())
-                                        <span class="text-xs text-zinc-400">Expirée</span>
+                                        <span class="text-xs text-zinc-400">{{ __('messages.expired') }}</span>
                                     @else
                                         <span class="text-xs text-green-600 dark:text-green-400">
                                             {{ $aide->date_expiration->format('d/m/Y') }}
