@@ -114,6 +114,7 @@ return [
 
     // Navigation
     'dashboard'                  => 'Dashboard',
+    'back_home'                  => 'Home page',
     'platform'                   => 'Platform',
     'settings'                   => 'Settings',
     'search'                     => 'Search',

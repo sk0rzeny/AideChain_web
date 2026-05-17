@@ -114,6 +114,7 @@ return [
 
     // Navigation
     'dashboard'                  => 'لوحة التحكم',
+    'back_home'                  => 'الصفحة الرئيسية',
     'platform'                   => 'المنصة',
     'settings'                   => 'الإعدادات',
     'search'                     => 'بحث',

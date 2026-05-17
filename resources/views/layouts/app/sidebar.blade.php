@@ -18,6 +18,12 @@
                         {{ __('messages.dashboard') }}
                     </flux:sidebar.item>
                 </flux:sidebar.group>
+
+                <flux:sidebar.group class="grid mt-auto">
+                    <flux:sidebar.item icon="arrow-left" href="{{ route('home') }}">
+                        {{ __('messages.back_home') }}
+                    </flux:sidebar.item>
+                </flux:sidebar.group>
             </flux:sidebar.nav>
 
             <flux:spacer />
