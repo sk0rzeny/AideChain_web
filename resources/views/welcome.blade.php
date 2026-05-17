@@ -8,6 +8,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.min.css" crossorigin="">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <style>
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -429,6 +430,74 @@
         }
         .foot-link:hover { color: var(--blue); }
 
+        /* ── Carte ── */
+        .map-wrap {
+            display: grid;
+            grid-template-columns: 1fr 240px;
+            gap: 32px;
+            margin-top: 48px;
+            align-items: start;
+        }
+        #chad-map {
+            height: 540px;
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            overflow: hidden;
+            position: relative;
+            z-index: 0;
+        }
+        .map-panel { display: flex; flex-direction: column; gap: 14px; }
+        .map-stat-card {
+            background: var(--bg-alt);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 20px 22px;
+        }
+        .map-stat-num {
+            font-size: 36px;
+            font-weight: 900;
+            color: var(--blue);
+            letter-spacing: -1.5px;
+            line-height: 1;
+        }
+        .map-stat-lbl { font-size: 12px; color: var(--gray); margin-top: 4px; line-height: 1.4; }
+        .map-note { font-size: 11px; color: var(--gray-lt); margin-top: 14px; line-height: 1.7; }
+        /* Leaflet info control */
+        .leaflet-info-chad {
+            padding: 9px 13px;
+            font-family: 'Jost', sans-serif;
+            font-size: 13px;
+            background: rgba(255,255,255,0.94);
+            box-shadow: 0 2px 12px rgba(0,0,0,.12);
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            min-width: 130px;
+            pointer-events: none;
+        }
+        /* Leaflet legend control */
+        .leaflet-legend-chad {
+            padding: 10px 13px;
+            font-family: 'Jost', sans-serif;
+            font-size: 12px;
+            line-height: 22px;
+            background: rgba(255,255,255,0.94);
+            box-shadow: 0 2px 12px rgba(0,0,0,.12);
+            border-radius: 10px;
+            border: 1px solid var(--border);
+        }
+        .leaflet-legend-chad i {
+            display: inline-block;
+            width: 14px; height: 14px;
+            border-radius: 3px;
+            margin-right: 7px;
+            vertical-align: middle;
+            border: 1px solid rgba(0,0,0,.08);
+        }
+        @media (max-width: 1024px) {
+            .map-wrap { grid-template-columns: 1fr; }
+            #chad-map { height: 380px; }
+        }
+
         /* ── Scroll reveal ── */
         [data-aos] {
             opacity: 0; transform: translateY(28px);
@@ -477,6 +546,7 @@
             <li><a href="#probleme"  class="nav-link">Problème</a></li>
             <li><a href="#solution"  class="nav-link">Solution</a></li>
             <li><a href="#equipe"    class="nav-link">Équipe</a></li>
+            <li><a href="#carte"     class="nav-link">Carte</a></li>
             <li><a href="#hackathon" class="nav-link">Hackathon</a></li>
         </ul>
     </nav>
@@ -505,6 +575,7 @@
     <a href="#probleme">Problème</a>
     <a href="#solution">Solution</a>
     <a href="#equipe">Équipe</a>
+    <a href="#carte">Carte</a>
     <a href="#hackathon">Hackathon</a>
 </nav>
 
@@ -641,6 +712,33 @@
                     </div>
                     <div class="feat-title">Traçabilité complète</div>
                     <p class="feat-text">Chaque aide distribuée est enregistrée avec horodatage, agent et ONG. Audit trail complet et immuable.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ── CARTE ── -->
+    <section id="carte" class="sec" aria-labelledby="carte-h">
+        <div class="sec-inner">
+            <div data-aos>
+                <div class="sec-tag">Couverture géographique</div>
+                <h2 id="carte-h">Bénéficiaires par région</h2>
+                <p style="color:var(--gray);margin-top:14px;max-width:580px;line-height:1.8;font-size:16px">
+                    Visualisation en temps réel de la couverture humanitaire au Tchad — chaque région colorée selon le nombre de bénéficiaires enregistrés dans le registre partagé.
+                </p>
+            </div>
+            <div class="map-wrap">
+                <div id="chad-map"></div>
+                <div class="map-panel" data-aos="left">
+                    <div class="map-stat-card">
+                        <div class="map-stat-num" id="map-total">—</div>
+                        <div class="map-stat-lbl">Bénéficiaires enregistrés dans le registre</div>
+                    </div>
+                    <div class="map-stat-card">
+                        <div class="map-stat-num" id="map-regions-actives" style="color:var(--black)">—</div>
+                        <div class="map-stat-lbl">Régions couvertes par au moins un projet d'aide</div>
+                    </div>
+                    <p class="map-note">Cliquez sur une région pour zoomer. Survolez pour voir le nombre de bénéficiaires. La légende et le détail sont affichés directement sur la carte.</p>
                 </div>
             </div>
         </div>
@@ -798,6 +896,160 @@
 
 </main>
 
+<script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.min.js" crossorigin=""></script>
+<script>
+(function () {
+    if (!document.getElementById('chad-map')) return;
+
+    // Correspondance GADM NAME_1 → nom français en base
+    var GADM_TO_FR = {
+        'BarhelGhazel'      : 'Barh El Gazel',
+        'Batha'             : 'Batha',
+        'Borkou'            : 'Borkou',
+        'Chari-Baguirmi'    : 'Chari-Baguirmi',
+        'EnnediEst'         : 'Ennedi Est',
+        'EnnediOuest'       : 'Ennedi Ouest',
+        'Guéra'        : 'Guéra',
+        'Hadjer-Lamis'      : 'Hadjer-Lamis',
+        'Kanem'             : 'Kanem',
+        'Lac'               : 'Lac',
+        'LogoneOccidental'  : 'Logone Occidental',
+        'LogoneOriental'    : 'Logone Oriental',
+        'Mandoul'           : 'Mandoul',
+        'Mayo-KebbiEst'     : 'Mayo-Kebbi Est',
+        'Mayo-KebbiOuest'   : 'Mayo-Kebbi Ouest',
+        'Moyen-Chari'       : 'Moyen-Chari',
+        'Ouaddaï'           : 'Ouaddaï',
+        'Salamat'           : 'Salamat',
+        'Sila'              : 'Sila',
+        'Tandjilé'          : 'Tandjilé',
+        'Tibesti'           : 'Tibesti',
+        "VilledeN’Djamena" : "N’Djamena",
+        'WadiFira'          : 'Wadi Fira'
+    };
+
+    // Initialisation de la carte
+    var map = L.map('chad-map', {
+        scrollWheelZoom: false
+    });
+
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+        attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors © <a href="https://carto.com/attributions">CARTO</a>',
+        subdomains: 'abcd',
+        maxZoom: 12
+    }).addTo(map);
+
+    function getColor(n) {
+        return n > 100 ? '#1553D4' :
+               n > 50  ? '#3B82F6' :
+               n > 20  ? '#60A5FA' :
+               n > 5   ? '#93C5FD' :
+               n > 0   ? '#DBEAFE' :
+                         '#F1F5F9';
+    }
+
+    // Contrôle info (survol) — pattern exact du tutoriel Leaflet
+    var info = L.control();
+    info.onAdd = function () {
+        this._div = L.DomUtil.create('div', 'leaflet-info-chad');
+        this.update();
+        return this._div;
+    };
+    info.update = function (props, count) {
+        if (props) {
+            var frName = GADM_TO_FR[props.NAME_1] || props.NAME_1;
+            this._div.innerHTML =
+                '<strong style="font-size:13px">' + frName + '</strong><br>' +
+                '<span style="color:#606060">' + (count || 0) +
+                ' bénéficiaire' + ((count || 0) !== 1 ? 's' : '') + '</span>';
+        } else {
+            this._div.innerHTML = '<span style="color:#A0A0A0;font-size:12px">Survolez une région</span>';
+        }
+    };
+    info.addTo(map);
+
+    // Contrôle légende — pattern exact du tutoriel Leaflet
+    var legend = L.control({ position: 'bottomright' });
+    legend.onAdd = function () {
+        var div    = L.DomUtil.create('div', 'leaflet-legend-chad');
+        var grades = [0, 1, 6, 21, 51, 101];
+        var labels = ['Non couvert', '1–5', '6–20', '21–50', '51–100', '100+'];
+        div.innerHTML = '<strong style="font-size:11px;letter-spacing:1px;text-transform:uppercase;color:#606060">Bénéficiaires</strong><br>';
+        for (var i = 0; i < grades.length; i++) {
+            div.innerHTML +=
+                '<i style="background:' + getColor(grades[i]) + '"></i>' + labels[i] + '<br>';
+        }
+        return div;
+    };
+    legend.addTo(map);
+
+    // Couche GeoJSON (déclarée en dehors des callbacks pour resetStyle)
+    var geojsonLayer;
+    var regionCounts = {};
+
+    function featureStyle(feature) {
+        var frName = GADM_TO_FR[feature.properties.NAME_1] || feature.properties.NAME_1;
+        return {
+            fillColor   : getColor(regionCounts[frName] || 0),
+            weight      : 1,
+            opacity     : 1,
+            color       : '#CBD5E1',
+            fillOpacity : 0.75
+        };
+    }
+
+    function highlightFeature(e) {
+        var layer = e.target;
+        layer.setStyle({ weight: 2.5, color: '#1553D4', fillOpacity: 0.92 });
+        layer.bringToFront();
+        var frName = GADM_TO_FR[layer.feature.properties.NAME_1] || layer.feature.properties.NAME_1;
+        info.update(layer.feature.properties, regionCounts[frName] || 0);
+    }
+
+    function resetHighlight(e) {
+        geojsonLayer.resetStyle(e.target);
+        info.update();
+    }
+
+    function zoomToFeature(e) {
+        map.fitBounds(e.target.getBounds());
+    }
+
+    function onEachFeature(feature, layer) {
+        layer.on({
+            mouseover : highlightFeature,
+            mouseout  : resetHighlight,
+            click     : zoomToFeature
+        });
+    }
+
+    // Chargement parallèle : GeoJSON local + données API
+    Promise.all([
+        fetch('/geojson/chad-regions.geojson').then(function (r) { return r.json(); }),
+        fetch('/map/regions').then(function (r) { return r.json(); })
+    ]).then(function (results) {
+        var geo  = results[0];
+        var data = results[1];
+
+        regionCounts = data.regions || {};
+        var actives  = Object.values(regionCounts).filter(function (v) { return v > 0; }).length;
+
+        var totalEl = document.getElementById('map-total');
+        var actEl   = document.getElementById('map-regions-actives');
+        if (totalEl) totalEl.textContent = data.total_beneficiaires || 0;
+        if (actEl)   actEl.textContent   = data.regions_couvertes || actives;
+
+        geojsonLayer = L.geoJSON(geo, {
+            style          : featureStyle,
+            onEachFeature  : onEachFeature
+        }).addTo(map);
+
+        map.fitBounds(geojsonLayer.getBounds(), { padding: [10, 10] });
+    }).catch(function (err) {
+        console.error('Carte AideChain :', err);
+    });
+})();
+</script>
 <script>
 (function () {
     // Scroll spy

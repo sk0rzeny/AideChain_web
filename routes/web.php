@@ -5,6 +5,7 @@ use App\Livewire\ChoisirOng;
 use Illuminate\Support\Facades\Route;
 
 Route::view('/', 'welcome')->name('home');
+Route::get('/map/regions', [\App\Http\Controllers\MapController::class, 'regions'])->name('map.regions');
 
 Route::post('/locale/{locale}', function (string $locale) {
     if (in_array($locale, ['en', 'fr', 'ar'])) {
